@@ -23,7 +23,7 @@ Include the Webpack plugin in the building of your app to build the Rust domain 
 ```js
 // in your webpack.config.js
 
-const DomainRustPlugin = require('@useoptic/wasm-pack-plugin');
+const DomainRustPlugin = require('@useoptic/domain-rust/webpack.plugin');
 
 module.exports = {
   // ...
