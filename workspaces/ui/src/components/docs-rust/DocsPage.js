@@ -21,7 +21,7 @@ export default function DocsPage() {
     <Page>
       <Page.Navbar mini={true} />
 
-      <Page.Body>Render something to prove rust domain works, here.</Page.Body>
+      <Page.Body>{domain.greet('everyone')}</Page.Body>
     </Page>
   );
 }
