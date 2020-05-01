@@ -21,6 +21,7 @@
     "workspaces/domain",
     "workspaces/domain-utilities",
     "workspaces/saas-types",
+    "workspaces/domain-rust",
     "workspaces/cli-config",
     "workspaces/cli-shared",
     "workspaces/client-utilities",

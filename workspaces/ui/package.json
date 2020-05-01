@@ -18,6 +18,7 @@
     "@useoptic/cli-client": "8.1.0",
     "@useoptic/domain": "8.1.0",
     "@useoptic/domain-utilities": "8.1.0",
+    "@useoptic/domain-rust": "0.1.0",
     "bottleneck": "^2.19.5",
     "camelcase": "^5.2.0",
     "classnames": "^2.2.6",
