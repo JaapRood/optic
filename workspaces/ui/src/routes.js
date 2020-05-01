@@ -13,12 +13,20 @@ const TestindDashboardTeaserPage = React.lazy(() =>
   import('./components/testing/TeaserPage')
 );
 
+const RustDocsPage = React.lazy(() =>
+  import('./components/docs-rust/DocsPage')
+);
+
 export function ApiRoutes(props) {
   const routerPaths = useRouterPaths();
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
-        <Route strict path={routerPaths.docsRoot} component={DocsPage} />
+        {process.env.REACT_APP_DOCS_RUST_DOMAIN === 'true' ? (
+          <Route strict path={routerPaths.docsRoot} component={RustDocsPage} />
+        ) : (
+          <Route strict path={routerPaths.docsRoot} component={DocsPage} />
+        )}
         <Route
           strict
           path={routerPaths.diffsRoot}
