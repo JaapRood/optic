@@ -1,3 +1,4 @@
+#[derive(Deserialize)]
 struct EventContext {
   clientId: String,
   clientSessionId: String,
@@ -5,14 +6,15 @@ struct EventContext {
   createdAt: String,
 }
 
-pub enum Events {
+#[derive(Deserialize)]
+pub enum Event {
   RfcEvent,
   RequestsEvent,
 }
 
 // RFC Events
 // -----------
-
+#[derive(Deserialize)]
 enum RfcEvent {
   ContributionAdded,
   APINamed,
@@ -21,6 +23,7 @@ enum RfcEvent {
   BatchCommitEnded,
 }
 
+#[derive(Deserialize)]
 struct ContributionAdded {
   id: String,
   key: String,
@@ -28,23 +31,27 @@ struct ContributionAdded {
   eventContext: Option<EventContext>,
 }
 
+#[derive(Deserialize)]
 struct APINamed {
   name: String,
   eventcontext: Option<EventContext>,
 }
 
+#[derive(Deserialize)]
 struct GitStateSet {
   branchName: String,
   commitId: String,
   eventContext: Option<EventContext>,
 }
 
+#[derive(Deserialize)]
 struct BatchCommitStarted {
   batchId: String,
   commitMessage: String,
   eventContext: Option<EventContext>,
 }
 
+#[derive(Deserialize)]
 struct BatchCommitEnded {
   batchId: String,
   eventContext: Option<EventContext>,
@@ -85,23 +92,27 @@ enum RequestsEvent {
 }
 
 // path components
+#[derive(Deserialize)]
 struct PathComponentAdded {
   pathId: PathComponentId,
   parentPathId: PathComponentId,
   name: String,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct PathComponentRenamed {
   pathId: PathComponentId,
   name: String,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct PathComponentRemoved {
   pathId: PathComponentId,
   eventContext: Option<EventContext>,
 }
 
 // path parameters
+#[derive(Deserialize)]
 struct PathParameterAdded {
   pathId: PathComponentId,
   parentPathId: PathComponentId,
@@ -109,11 +120,13 @@ struct PathParameterAdded {
   eventContext: Option<EventContext>,
 }
 // TODO: add PathParameterShapeSet
+#[derive(Deserialize)]
 struct PathParameterRenamed {
   pathId: PathComponentId,
   name: String,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct PathParameterRemoved {
   pathId: PathComponentId,
   name: String,
@@ -121,6 +134,7 @@ struct PathParameterRemoved {
 }
 
 // request parameters
+#[derive(Deserialize)]
 struct RequestParameterAddedByPathAndMethod {
   parameterId: RequestParameterId,
   pathId: PathComponentId,
@@ -129,52 +143,62 @@ struct RequestParameterAddedByPathAndMethod {
   name: String,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct RequestParameterRenamed {
   parameterId: RequestParameterId,
   name: String,
   eventContext: Option<EventContext>,
 }
+// #[derive(Deserialize)]
 // struct RequestParameterShapeSet {
 //   parameterId: RequestParameterId,
 //   parameterDescriptor: ShapedRequestParameterShapeDescriptor,
 //   eventContext: Option<EventContext>,
 // }
+#[derive(Deserialize)]
 struct RequestParameterShapeUnset {
   parameterId: RequestParameterId,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct RequestParameterRemoved {
   parameterId: RequestParameterId,
   eventContext: Option<EventContext>,
 }
 
 // Request events
+#[derive(Deserialize)]
 struct RequestAdded {
   requestId: RequestId,
   pathId: PathComponentId,
   httpMethod: String,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct RequestContentTypeSet {
   requestId: RequestId,
   httpContentType: String,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct RequestBodySet {
   requestId: RequestId,
   // bodyDescriptor: ShapedBodyDescriptor,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct RequestBodyUnset {
   requestId: RequestId,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct RequestRemoved {
   requestId: RequestId,
   eventContext: Option<EventContext>,
 }
 
 // Response events
+#[derive(Deserialize)]
 struct ResponseAddedByPathAndMethod {
   responseId: ResponseId,
   pathId: PathComponentId,
@@ -182,25 +206,30 @@ struct ResponseAddedByPathAndMethod {
   httpStatusCode: u8,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct ResponseStatusCodeSet {
   responseId: ResponseId,
   httpStatusCode: u8,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct ResponseContentTypeSet {
   responseId: ResponseId,
   httpContentType: String,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct ResponseBodySet {
   responseId: ResponseId,
   // bodyDescriptor: ShapedBodyDescriptor,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct ResponseBodyUnset {
   responseId: ResponseId,
   eventContext: Option<EventContext>,
 }
+#[derive(Deserialize)]
 struct ResponseRemoved {
   responseId: ResponseId,
   eventContext: Option<EventContext>,

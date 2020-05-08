@@ -1,8 +1,12 @@
+use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
 use web_sys::console;
 
+#[macro_use]
+extern crate serde_derive;
+
 mod events;
-use events::Events;
+use events::Event;
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
@@ -25,6 +29,8 @@ pub fn main_js() -> Result<(), JsValue> {
 #[wasm_bindgen]
 pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
     console::log_1(&raw_events);
+
+    let events: Vec<HashMap<String, Event>> = raw_events.into_serde().unwrap();
 
     Ok(())
 }
