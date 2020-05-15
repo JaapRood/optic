@@ -217,6 +217,43 @@ pub struct ResponseRemoved {
   event_context: Option<EventContext>,
 }
 
+impl Event for RequestsEvent {
+  fn event_type(&self) -> &'static str {
+    match *self {
+      RequestsEvent::PathComponentAdded(ref evt) => evt.event_type(),
+      RequestsEvent::PathComponentRenamed(ref evt) => evt.event_type(),
+      RequestsEvent::PathComponentRemoved(ref evt) => evt.event_type(),
+
+      // path parameters
+      RequestsEvent::PathParameterAdded(ref evt) => evt.event_type(),
+      RequestsEvent::PathParameterRenamed(ref evt) => evt.event_type(),
+      RequestsEvent::PathParameterRemoved(ref evt) => evt.event_type(),
+
+      // request parameters
+      RequestsEvent::RequestParameterAddedByPathAndMethod(ref evt) => evt.event_type(),
+      RequestsEvent::RequestParameterRenamed(ref evt) => evt.event_type(),
+      RequestsEvent::RequestParameterShapeSet(ref evt) => evt.event_type(),
+      RequestsEvent::RequestParameterShapeUnset(ref evt) => evt.event_type(),
+      RequestsEvent::RequestParameterRemoved(ref evt) => evt.event_type(),
+
+      // Request events
+      RequestsEvent::RequestAdded(ref evt) => evt.event_type(),
+      RequestsEvent::RequestContentTypeSet(ref evt) => evt.event_type(),
+      RequestsEvent::RequestBodySet(ref evt) => evt.event_type(),
+      RequestsEvent::RequestBodyUnset(ref evt) => evt.event_type(),
+
+      // Response events
+      RequestsEvent::ResponseAddedByPathAndMethod(ref evt) => evt.event_type(),
+      RequestsEvent::ResponseStatusCodeSet(ref evt) => evt.event_type(),
+      RequestsEvent::ResponseContentTypeSet(ref evt) => evt.event_type(),
+      RequestsEvent::ResponseBodySet(ref evt) => evt.event_type(),
+      RequestsEvent::ResponseBodyUnset(ref evt) => evt.event_type(),
+      RequestsEvent::ResponseRemoved(ref evt) => evt.event_type(),
+      RequestsEvent::ResponseRemoved(ref evt) => evt.event_type(),
+    }
+  }
+}
+
 impl Event for PathComponentAdded {
   fn event_type(&self) -> &'static str {
     "PathComponentAdded"

@@ -51,6 +51,18 @@ pub struct BatchCommitEnded {
   event_context: Option<EventContext>,
 }
 
+impl Event for RfcEvent {
+  fn event_type(&self) -> &'static str {
+    match *self {
+      RfcEvent::ContributionAdded(ref evt) => evt.event_type(),
+      RfcEvent::APINamed(ref evt) => evt.event_type(),
+      RfcEvent::GitStateSet(ref evt) => evt.event_type(),
+      RfcEvent::BatchCommitStarted(ref evt) => evt.event_type(),
+      RfcEvent::BatchCommitEnded(ref evt) => evt.event_type(),
+    }
+  }
+}
+
 impl Event for ContributionAdded {
   fn event_type(&self) -> &'static str {
     "ContributionAdded"

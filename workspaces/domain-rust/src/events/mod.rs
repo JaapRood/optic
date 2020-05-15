@@ -1,5 +1,7 @@
 #![allow(dead_code)]
 
+use cqrs_core::Event;
+
 mod requests;
 mod rfc;
 mod shape;
@@ -15,8 +17,18 @@ struct EventContext {
 
 #[derive(Deserialize)]
 #[serde(untagged)]
-pub enum Event {
+pub enum OpticEvent {
   RequestsEvent(requests::RequestsEvent),
   RfcEvent(rfc::RfcEvent),
   ShapeEvent(shape::ShapeEvent),
+}
+
+impl Event for OpticEvent {
+  fn event_type(&self) -> &'static str {
+    match *self {
+      OpticEvent::RequestsEvent(ref evt) => evt.event_type(),
+      OpticEvent::RfcEvent(ref evt) => evt.event_type(),
+      OpticEvent::ShapeEvent(ref evt) => evt.event_type(),
+    }
+  }
 }

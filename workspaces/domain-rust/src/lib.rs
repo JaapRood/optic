@@ -6,7 +6,7 @@ use web_sys::console;
 extern crate serde_derive;
 
 mod events;
-use events::Event;
+use events::OpticEvent;
 
 mod state;
 use state::requests::RequestsState;
@@ -33,7 +33,7 @@ pub fn main_js() -> Result<(), JsValue> {
 pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
     console::log_1(&raw_events);
 
-    let events: Vec<Event> = raw_events.into_serde().unwrap();
+    let events: Vec<OpticEvent> = raw_events.into_serde().unwrap();
 
     Ok(())
 }

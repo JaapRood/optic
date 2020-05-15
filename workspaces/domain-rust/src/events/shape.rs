@@ -119,6 +119,26 @@ pub struct FieldRemoved {
   event_context: Option<EventContext>,
 }
 
+impl Event for ShapeEvent {
+  fn event_type(&self) -> &'static str {
+    match *self {
+      ShapeEvent::ShapeAdded(ref evt) => evt.event_type(),
+      ShapeEvent::BaseShapeSet(ref evt) => evt.event_type(),
+      ShapeEvent::ShapeRenamed(ref evt) => evt.event_type(),
+      ShapeEvent::ShapeRemoved(ref evt) => evt.event_type(),
+      ShapeEvent::ShapeParameterAdded(ref evt) => evt.event_type(),
+      ShapeEvent::ShapeParameterShapeSet(ref evt) => evt.event_type(),
+      ShapeEvent::ShapeParameterRenamed(ref evt) => evt.event_type(),
+      ShapeEvent::ShapeParameterRemoved(ref evt) => evt.event_type(),
+
+      ShapeEvent::FieldAdded(ref evt) => evt.event_type(),
+      ShapeEvent::FieldShapeSet(ref evt) => evt.event_type(),
+      ShapeEvent::FieldRenamed(ref evt) => evt.event_type(),
+      ShapeEvent::FieldRemoved(ref evt) => evt.event_type(),
+    }
+  }
+}
+
 impl Event for ShapeAdded {
   fn event_type(&self) -> &'static str {
     "ShapeAdded"
