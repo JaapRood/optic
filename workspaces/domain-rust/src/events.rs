@@ -1,9 +1,12 @@
+#![allow(dead_code)]
+
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 struct EventContext {
-  clientId: String,
-  clientSessionId: String,
-  clientCommandBatchId: String,
-  createdAt: String,
+  client_id: String,
+  client_session_id: String,
+  client_command_batch_id: String,
+  created_at: String,
 }
 
 #[derive(Deserialize)]
@@ -18,32 +21,37 @@ pub enum Event {
 // -----------
 #[derive(Deserialize)]
 enum RfcEvent {
+  #[serde(rename_all = "camelCase")]
   ContributionAdded {
     id: String,
     key: String,
     value: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   APINamed {
     name: String,
-    eventcontext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
 
+  #[serde(rename_all = "camelCase")]
   GitStateSet {
-    branchName: String,
-    commitId: String,
-    eventContext: Option<EventContext>,
+    branch_name: String,
+    commit_id: String,
+    event_context: Option<EventContext>,
   },
 
+  #[serde(rename_all = "camelCase")]
   BatchCommitStarted {
-    batchId: String,
-    commitMessage: String,
-    eventContext: Option<EventContext>,
+    batch_id: String,
+    commit_message: String,
+    event_context: Option<EventContext>,
   },
 
+  #[serde(rename_all = "camelCase")]
   BatchCommitEnded {
-    batchId: String,
-    eventContext: Option<EventContext>,
+    batch_id: String,
+    event_context: Option<EventContext>,
   },
 }
 
@@ -58,126 +66,148 @@ type ResponseId = String;
 #[derive(Deserialize)]
 enum RequestsEvent {
   // path components
+  #[serde(rename_all = "camelCase")]
   PathComponentAdded {
-    pathId: PathComponentId,
-    parentPathId: PathComponentId,
+    path_id: PathComponentId,
+    parent_path_id: PathComponentId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   PathComponentRenamed {
-    pathId: PathComponentId,
+    path_id: PathComponentId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   PathComponentRemoved {
-    pathId: PathComponentId,
-    eventContext: Option<EventContext>,
+    path_id: PathComponentId,
+    event_context: Option<EventContext>,
   },
 
+  #[serde(rename_all = "camelCase")]
   // path parameters
   PathParameterAdded {
-    pathId: PathComponentId,
-    parentPathId: PathComponentId,
+    path_id: PathComponentId,
+    parent_path_id: PathComponentId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   // TODO: add PathParameterShapeSet
   PathParameterRenamed {
-    pathId: PathComponentId,
+    path_id: PathComponentId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   PathParameterRemoved {
-    pathId: PathComponentId,
+    path_id: PathComponentId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
 
   // request parameters
+  #[serde(rename_all = "camelCase")]
   RequestParameterAddedByPathAndMethod {
-    parameterId: RequestParameterId,
-    pathId: PathComponentId,
-    httpMethod: String,
-    parameterLocation: String,
+    parameter_id: RequestParameterId,
+    path_id: PathComponentId,
+    http_method: String,
+    parameter_location: String,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   RequestParameterRenamed {
-    parameterId: RequestParameterId,
+    parameter_id: RequestParameterId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   RequestParameterShapeSet {
-    parameterId: RequestParameterId,
+    parameter_id: RequestParameterId,
     // parameterDescriptor: ShapedRequestParameterShapeDescriptor,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   RequestParameterShapeUnset {
-    parameterId: RequestParameterId,
-    eventContext: Option<EventContext>,
+    parameter_id: RequestParameterId,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   RequestParameterRemoved {
-    parameterId: RequestParameterId,
-    eventContext: Option<EventContext>,
+    parameter_id: RequestParameterId,
+    event_context: Option<EventContext>,
   },
 
   // Request events
+  #[serde(rename_all = "camelCase")]
   RequestAdded {
-    requestId: RequestId,
-    pathId: PathComponentId,
-    httpMethod: String,
-    eventContext: Option<EventContext>,
+    request_id: RequestId,
+    path_id: PathComponentId,
+    http_method: String,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   RequestContentTypeSet {
-    requestId: RequestId,
-    httpContentType: String,
-    eventContext: Option<EventContext>,
+    request_id: RequestId,
+    http_content_type: String,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   RequestBodySet {
-    requestId: RequestId,
+    request_id: RequestId,
     // bodyDescriptor: ShapedBodyDescriptor,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   RequestBodyUnset {
-    requestId: RequestId,
-    eventContext: Option<EventContext>,
+    request_id: RequestId,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   RequestRemoved {
-    requestId: RequestId,
-    eventContext: Option<EventContext>,
+    request_id: RequestId,
+    event_context: Option<EventContext>,
   },
 
   // Response events
+  #[serde(rename_all = "camelCase")]
   ResponseAddedByPathAndMethod {
-    responseId: ResponseId,
-    pathId: PathComponentId,
-    httpMethod: String,
-    httpStatusCode: u8,
-    eventContext: Option<EventContext>,
+    response_id: ResponseId,
+    path_id: PathComponentId,
+    http_method: String,
+    http_status_code: u16,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ResponseStatusCodeSet {
-    responseId: ResponseId,
-    httpStatusCode: u8,
-    eventContext: Option<EventContext>,
+    response_id: ResponseId,
+    http_status_code: u16,
+    event_context: Option<EventContext>,
   },
 
+  #[serde(rename_all = "camelCase")]
   ResponseContentTypeSet {
-    responseId: ResponseId,
-    httpContentType: String,
-    eventContext: Option<EventContext>,
+    response_id: ResponseId,
+    http_content_type: String,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ResponseBodySet {
-    responseId: ResponseId,
+    response_id: ResponseId,
     // bodyDescriptor: ShapedBodyDescriptor,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ResponseBodyUnset {
-    responseId: ResponseId,
-    eventContext: Option<EventContext>,
+    response_id: ResponseId,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ResponseRemoved {
-    responseId: ResponseId,
-    eventContext: Option<EventContext>,
+    response_id: ResponseId,
+    event_context: Option<EventContext>,
   },
 }
 
@@ -190,67 +220,79 @@ type FieldId = String;
 
 #[derive(Deserialize)]
 enum ShapeEvent {
+  #[serde(rename_all = "camelCase")]
   ShapeAdded {
-    shapeId: ShapeId,
-    baseShapeId: ShapeId,
+    shape_id: ShapeId,
+    base_shape_id: ShapeId,
     // parameters: ShapeParametersDescriptor,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   BaseShapeSet {
-    shapeId: ShapeId,
-    baseShapeId: ShapeId,
-    eventContext: Option<EventContext>,
+    shape_id: ShapeId,
+    base_shape_id: ShapeId,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ShapeRenamed {
-    shapeId: ShapeId,
+    shape_id: ShapeId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ShapeRemoved {
-    shapeId: ShapeId,
-    eventContext: Option<EventContext>,
+    shape_id: ShapeId,
+    event_context: Option<EventContext>,
   },
 
+  #[serde(rename_all = "camelCase")]
   ShapeParameterAdded {
-    shapeParameterId: ShapeParameterId,
-    shapeId: ShapeId,
+    shape_parameter_id: ShapeParameterId,
+    shape_id: ShapeId,
     name: String,
     // shapeDescriptor: ParameterShapeDescriptor,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ShapeParameterShapeSet {
     // shapeDescriptor: ParameterShapeDescriptor,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ShapeParameterRenamed {
-    shapeParameterId: ShapeParameterId,
+    shape_parameter_id: ShapeParameterId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   ShapeParameterRemoved {
-    shapeParameterId: ShapeParameterId,
-    eventContext: Option<EventContext>,
+    shape_parameter_id: ShapeParameterId,
+    event_context: Option<EventContext>,
   },
 
+  #[serde(rename_all = "camelCase")]
   FieldAdded {
-    fieldId: FieldId,
-    shapeId: ShapeId,
+    field_id: FieldId,
+    shape_id: ShapeId,
     name: String,
     // shapeDescriptor: FieldShapeDescriptor,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   FieldShapeSet {
     // shapeDescriptor: FieldShapeDescriptor,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   FieldRenamed {
-    fieldId: FieldId,
+    field_id: FieldId,
     name: String,
-    eventContext: Option<EventContext>,
+    event_context: Option<EventContext>,
   },
+  #[serde(rename_all = "camelCase")]
   FieldRemoved {
-    fieldId: FieldId,
-    eventContext: Option<EventContext>,
+    field_id: FieldId,
+    event_context: Option<EventContext>,
   },
 }
