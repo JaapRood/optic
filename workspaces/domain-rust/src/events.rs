@@ -7,54 +7,44 @@ struct EventContext {
 }
 
 #[derive(Deserialize)]
+#[serde(untagged)]
 pub enum Event {
-  RfcEvent,
-  RequestsEvent,
+  RequestsEvent(RequestsEvent),
+  RfcEvent(RfcEvent),
+  ShapeEvent(ShapeEvent),
 }
 
 // RFC Events
 // -----------
 #[derive(Deserialize)]
 enum RfcEvent {
-  ContributionAdded,
-  APINamed,
-  GitStateSet,
-  BatchCommitStarted,
-  BatchCommitEnded,
-}
+  ContributionAdded {
+    id: String,
+    key: String,
+    value: String,
+    eventContext: Option<EventContext>,
+  },
+  APINamed {
+    name: String,
+    eventcontext: Option<EventContext>,
+  },
 
-#[derive(Deserialize)]
-struct ContributionAdded {
-  id: String,
-  key: String,
-  value: String,
-  eventContext: Option<EventContext>,
-}
+  GitStateSet {
+    branchName: String,
+    commitId: String,
+    eventContext: Option<EventContext>,
+  },
 
-#[derive(Deserialize)]
-struct APINamed {
-  name: String,
-  eventcontext: Option<EventContext>,
-}
+  BatchCommitStarted {
+    batchId: String,
+    commitMessage: String,
+    eventContext: Option<EventContext>,
+  },
 
-#[derive(Deserialize)]
-struct GitStateSet {
-  branchName: String,
-  commitId: String,
-  eventContext: Option<EventContext>,
-}
-
-#[derive(Deserialize)]
-struct BatchCommitStarted {
-  batchId: String,
-  commitMessage: String,
-  eventContext: Option<EventContext>,
-}
-
-#[derive(Deserialize)]
-struct BatchCommitEnded {
-  batchId: String,
-  eventContext: Option<EventContext>,
+  BatchCommitEnded {
+    batchId: String,
+    eventContext: Option<EventContext>,
+  },
 }
 
 // Requests events
@@ -65,172 +55,202 @@ type RequestId = String;
 type RequestParameterId = String;
 type ResponseId = String;
 
+#[derive(Deserialize)]
 enum RequestsEvent {
-  PathComponentAdded,
-  PathComponentRenamed,
-  PathComponentRemoved,
-  PathParameterAdded,
-  PathParameterShapeSet,
-  PathParameterRenamed,
-  PathParameterRemoved,
-  RequestParameterAddedByPathAndMethod,
-  RequestParameterRenamed,
-  RequestParameterShapeSet,
-  RequestParameterShapeUnset,
-  RequestParameterRemoved,
-  RequestAdded,
-  RequestContentTypeSet,
-  RequestBodySet,
-  RequestBodyUnset,
-  RequestRemoved,
-  ResponseAddedByPathAndMethod,
-  ResponseStatusCodeSet,
-  ResponseContentTypeSet,
-  ResponseBodySet,
-  ResponseBodyUnset,
-  ResponseRemoved,
+  // path components
+  PathComponentAdded {
+    pathId: PathComponentId,
+    parentPathId: PathComponentId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  PathComponentRenamed {
+    pathId: PathComponentId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  PathComponentRemoved {
+    pathId: PathComponentId,
+    eventContext: Option<EventContext>,
+  },
+
+  // path parameters
+  PathParameterAdded {
+    pathId: PathComponentId,
+    parentPathId: PathComponentId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  // TODO: add PathParameterShapeSet
+  PathParameterRenamed {
+    pathId: PathComponentId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  PathParameterRemoved {
+    pathId: PathComponentId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+
+  // request parameters
+  RequestParameterAddedByPathAndMethod {
+    parameterId: RequestParameterId,
+    pathId: PathComponentId,
+    httpMethod: String,
+    parameterLocation: String,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  RequestParameterRenamed {
+    parameterId: RequestParameterId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  RequestParameterShapeSet {
+    parameterId: RequestParameterId,
+    // parameterDescriptor: ShapedRequestParameterShapeDescriptor,
+    eventContext: Option<EventContext>,
+  },
+  RequestParameterShapeUnset {
+    parameterId: RequestParameterId,
+    eventContext: Option<EventContext>,
+  },
+  RequestParameterRemoved {
+    parameterId: RequestParameterId,
+    eventContext: Option<EventContext>,
+  },
+
+  // Request events
+  RequestAdded {
+    requestId: RequestId,
+    pathId: PathComponentId,
+    httpMethod: String,
+    eventContext: Option<EventContext>,
+  },
+  RequestContentTypeSet {
+    requestId: RequestId,
+    httpContentType: String,
+    eventContext: Option<EventContext>,
+  },
+  RequestBodySet {
+    requestId: RequestId,
+    // bodyDescriptor: ShapedBodyDescriptor,
+    eventContext: Option<EventContext>,
+  },
+  RequestBodyUnset {
+    requestId: RequestId,
+    eventContext: Option<EventContext>,
+  },
+  RequestRemoved {
+    requestId: RequestId,
+    eventContext: Option<EventContext>,
+  },
+
+  // Response events
+  ResponseAddedByPathAndMethod {
+    responseId: ResponseId,
+    pathId: PathComponentId,
+    httpMethod: String,
+    httpStatusCode: u8,
+    eventContext: Option<EventContext>,
+  },
+  ResponseStatusCodeSet {
+    responseId: ResponseId,
+    httpStatusCode: u8,
+    eventContext: Option<EventContext>,
+  },
+
+  ResponseContentTypeSet {
+    responseId: ResponseId,
+    httpContentType: String,
+    eventContext: Option<EventContext>,
+  },
+  ResponseBodySet {
+    responseId: ResponseId,
+    // bodyDescriptor: ShapedBodyDescriptor,
+    eventContext: Option<EventContext>,
+  },
+  ResponseBodyUnset {
+    responseId: ResponseId,
+    eventContext: Option<EventContext>,
+  },
+  ResponseRemoved {
+    responseId: ResponseId,
+    eventContext: Option<EventContext>,
+  },
 }
 
-// path components
-#[derive(Deserialize)]
-struct PathComponentAdded {
-  pathId: PathComponentId,
-  parentPathId: PathComponentId,
-  name: String,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct PathComponentRenamed {
-  pathId: PathComponentId,
-  name: String,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct PathComponentRemoved {
-  pathId: PathComponentId,
-  eventContext: Option<EventContext>,
-}
+// Shape events
+// ------------
 
-// path parameters
-#[derive(Deserialize)]
-struct PathParameterAdded {
-  pathId: PathComponentId,
-  parentPathId: PathComponentId,
-  name: String,
-  eventContext: Option<EventContext>,
-}
-// TODO: add PathParameterShapeSet
-#[derive(Deserialize)]
-struct PathParameterRenamed {
-  pathId: PathComponentId,
-  name: String,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct PathParameterRemoved {
-  pathId: PathComponentId,
-  name: String,
-  eventContext: Option<EventContext>,
-}
+type ShapeId = String;
+type ShapeParameterId = String;
+type FieldId = String;
 
-// request parameters
 #[derive(Deserialize)]
-struct RequestParameterAddedByPathAndMethod {
-  parameterId: RequestParameterId,
-  pathId: PathComponentId,
-  httpMethod: String,
-  parameterLocation: String,
-  name: String,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct RequestParameterRenamed {
-  parameterId: RequestParameterId,
-  name: String,
-  eventContext: Option<EventContext>,
-}
-// #[derive(Deserialize)]
-// struct RequestParameterShapeSet {
-//   parameterId: RequestParameterId,
-//   parameterDescriptor: ShapedRequestParameterShapeDescriptor,
-//   eventContext: Option<EventContext>,
-// }
-#[derive(Deserialize)]
-struct RequestParameterShapeUnset {
-  parameterId: RequestParameterId,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct RequestParameterRemoved {
-  parameterId: RequestParameterId,
-  eventContext: Option<EventContext>,
-}
+enum ShapeEvent {
+  ShapeAdded {
+    shapeId: ShapeId,
+    baseShapeId: ShapeId,
+    // parameters: ShapeParametersDescriptor,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  BaseShapeSet {
+    shapeId: ShapeId,
+    baseShapeId: ShapeId,
+    eventContext: Option<EventContext>,
+  },
+  ShapeRenamed {
+    shapeId: ShapeId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  ShapeRemoved {
+    shapeId: ShapeId,
+    eventContext: Option<EventContext>,
+  },
 
-// Request events
-#[derive(Deserialize)]
-struct RequestAdded {
-  requestId: RequestId,
-  pathId: PathComponentId,
-  httpMethod: String,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct RequestContentTypeSet {
-  requestId: RequestId,
-  httpContentType: String,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct RequestBodySet {
-  requestId: RequestId,
-  // bodyDescriptor: ShapedBodyDescriptor,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct RequestBodyUnset {
-  requestId: RequestId,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct RequestRemoved {
-  requestId: RequestId,
-  eventContext: Option<EventContext>,
-}
+  ShapeParameterAdded {
+    shapeParameterId: ShapeParameterId,
+    shapeId: ShapeId,
+    name: String,
+    // shapeDescriptor: ParameterShapeDescriptor,
+    eventContext: Option<EventContext>,
+  },
+  ShapeParameterShapeSet {
+    // shapeDescriptor: ParameterShapeDescriptor,
+    eventContext: Option<EventContext>,
+  },
+  ShapeParameterRenamed {
+    shapeParameterId: ShapeParameterId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  ShapeParameterRemoved {
+    shapeParameterId: ShapeParameterId,
+    eventContext: Option<EventContext>,
+  },
 
-// Response events
-#[derive(Deserialize)]
-struct ResponseAddedByPathAndMethod {
-  responseId: ResponseId,
-  pathId: PathComponentId,
-  httpMethod: String,
-  httpStatusCode: u8,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct ResponseStatusCodeSet {
-  responseId: ResponseId,
-  httpStatusCode: u8,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct ResponseContentTypeSet {
-  responseId: ResponseId,
-  httpContentType: String,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct ResponseBodySet {
-  responseId: ResponseId,
-  // bodyDescriptor: ShapedBodyDescriptor,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct ResponseBodyUnset {
-  responseId: ResponseId,
-  eventContext: Option<EventContext>,
-}
-#[derive(Deserialize)]
-struct ResponseRemoved {
-  responseId: ResponseId,
-  eventContext: Option<EventContext>,
+  FieldAdded {
+    fieldId: FieldId,
+    shapeId: ShapeId,
+    name: String,
+    // shapeDescriptor: FieldShapeDescriptor,
+    eventContext: Option<EventContext>,
+  },
+  FieldShapeSet {
+    // shapeDescriptor: FieldShapeDescriptor,
+    eventContext: Option<EventContext>,
+  },
+  FieldRenamed {
+    fieldId: FieldId,
+    name: String,
+    eventContext: Option<EventContext>,
+  },
+  FieldRemoved {
+    fieldId: FieldId,
+    eventContext: Option<EventContext>,
+  },
 }

@@ -30,7 +30,7 @@ pub fn main_js() -> Result<(), JsValue> {
 pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
     console::log_1(&raw_events);
 
-    let events: Vec<HashMap<String, Event>> = raw_events.into_serde().unwrap();
+    let events: Vec<Event> = raw_events.into_serde().unwrap();
 
     Ok(())
 }
