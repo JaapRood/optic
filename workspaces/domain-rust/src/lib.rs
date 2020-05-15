@@ -8,6 +8,9 @@ extern crate serde_derive;
 mod events;
 use events::Event;
 
+mod state;
+use state::requests::RequestsState;
+
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
 //
