@@ -2,9 +2,9 @@
 
 use cqrs_core::Event;
 
-mod requests;
-mod rfc;
-mod shape;
+pub mod requests;
+pub mod rfc;
+pub mod shape;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]

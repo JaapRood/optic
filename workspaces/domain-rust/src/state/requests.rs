@@ -1,6 +1,10 @@
-pub struct RequestsState {}
+use std::collections::HashMap;
 
-type PathComponentId = String;
+pub struct RequestsState {
+  pathComponents: HashMap<PathComponentId, PathComponent>,
+}
+
+pub type PathComponentId = String;
 
 struct PathComponent {
   pathId: PathComponentId,

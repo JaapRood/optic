@@ -9,7 +9,8 @@ mod events;
 use events::OpticEvent;
 
 mod state;
-use state::requests::RequestsState;
+
+mod aggregate;
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
