@@ -1,4 +1,5 @@
 use super::EventContext;
+use cqrs_core::Event;
 
 // RFC Events
 // -----------
@@ -48,4 +49,34 @@ pub struct BatchCommitStarted {
 pub struct BatchCommitEnded {
   batch_id: String,
   event_context: Option<EventContext>,
+}
+
+impl Event for ContributionAdded {
+  fn event_type(&self) -> &'static str {
+    "ContributionAdded"
+  }
+}
+
+impl Event for APINamed {
+  fn event_type(&self) -> &'static str {
+    "APINamed"
+  }
+}
+
+impl Event for GitStateSet {
+  fn event_type(&self) -> &'static str {
+    "GitStateSet"
+  }
+}
+
+impl Event for BatchCommitStarted {
+  fn event_type(&self) -> &'static str {
+    "BatchCommitStarted"
+  }
+}
+
+impl Event for BatchCommitEnded {
+  fn event_type(&self) -> &'static str {
+    "BatchCommitEnded"
+  }
 }

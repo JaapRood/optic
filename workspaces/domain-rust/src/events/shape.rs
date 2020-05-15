@@ -1,4 +1,5 @@
 use super::EventContext;
+use cqrs_core::Event;
 
 type ShapeId = String;
 type ShapeParameterId = String;
@@ -116,4 +117,76 @@ pub struct FieldRenamed {
 pub struct FieldRemoved {
   field_id: FieldId,
   event_context: Option<EventContext>,
+}
+
+impl Event for ShapeAdded {
+  fn event_type(&self) -> &'static str {
+    "ShapeAdded"
+  }
+}
+
+impl Event for BaseShapeSet {
+  fn event_type(&self) -> &'static str {
+    "BaseShapeSet"
+  }
+}
+
+impl Event for ShapeRenamed {
+  fn event_type(&self) -> &'static str {
+    "ShapeRenamed"
+  }
+}
+
+impl Event for ShapeRemoved {
+  fn event_type(&self) -> &'static str {
+    "ShapeRemoved"
+  }
+}
+
+impl Event for ShapeParameterAdded {
+  fn event_type(&self) -> &'static str {
+    "ShapeParameterAdded"
+  }
+}
+
+impl Event for ShapeParameterShapeSet {
+  fn event_type(&self) -> &'static str {
+    "ShapeParameterShapeSet"
+  }
+}
+
+impl Event for ShapeParameterRenamed {
+  fn event_type(&self) -> &'static str {
+    "ShapeParameterRenamed"
+  }
+}
+
+impl Event for ShapeParameterRemoved {
+  fn event_type(&self) -> &'static str {
+    "ShapeParameterRemoved"
+  }
+}
+
+impl Event for FieldAdded {
+  fn event_type(&self) -> &'static str {
+    "FieldAdded"
+  }
+}
+
+impl Event for FieldShapeSet {
+  fn event_type(&self) -> &'static str {
+    "FieldShapeSet"
+  }
+}
+
+impl Event for FieldRenamed {
+  fn event_type(&self) -> &'static str {
+    "FieldRenamed"
+  }
+}
+
+impl Event for FieldRemoved {
+  fn event_type(&self) -> &'static str {
+    "FieldRemoved"
+  }
 }

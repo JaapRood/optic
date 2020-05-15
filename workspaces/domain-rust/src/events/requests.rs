@@ -1,4 +1,5 @@
 use super::EventContext;
+use cqrs_core::Event;
 
 type PathComponentId = String;
 type RequestId = String;
@@ -214,4 +215,136 @@ pub struct ResponseBodyUnset {
 pub struct ResponseRemoved {
   response_id: ResponseId,
   event_context: Option<EventContext>,
+}
+
+impl Event for PathComponentAdded {
+  fn event_type(&self) -> &'static str {
+    "PathComponentAdded"
+  }
+}
+
+impl Event for PathComponentRenamed {
+  fn event_type(&self) -> &'static str {
+    "PathComponentRenamed"
+  }
+}
+
+impl Event for PathComponentRemoved {
+  fn event_type(&self) -> &'static str {
+    "PathComponentRemoved"
+  }
+}
+
+impl Event for PathParameterAdded {
+  fn event_type(&self) -> &'static str {
+    "PathParameterAdded"
+  }
+}
+
+impl Event for PathParameterRenamed {
+  fn event_type(&self) -> &'static str {
+    "PathParameterRenamed"
+  }
+}
+
+impl Event for PathParameterRemoved {
+  fn event_type(&self) -> &'static str {
+    "PathParameterRemoved"
+  }
+}
+
+impl Event for RequestParameterAddedByPathAndMethod {
+  fn event_type(&self) -> &'static str {
+    "RequestParameterAddedByPathAndMethod"
+  }
+}
+
+impl Event for RequestParameterRenamed {
+  fn event_type(&self) -> &'static str {
+    "RequestParameterRenamed"
+  }
+}
+
+impl Event for RequestParameterShapeSet {
+  fn event_type(&self) -> &'static str {
+    "RequestParameterShapeSet"
+  }
+}
+
+impl Event for RequestParameterShapeUnset {
+  fn event_type(&self) -> &'static str {
+    "RequestParameterShapeUnset"
+  }
+}
+
+impl Event for RequestParameterRemoved {
+  fn event_type(&self) -> &'static str {
+    "RequestParameterRemoved"
+  }
+}
+
+impl Event for RequestAdded {
+  fn event_type(&self) -> &'static str {
+    "RequestAdded"
+  }
+}
+
+impl Event for RequestContentTypeSet {
+  fn event_type(&self) -> &'static str {
+    "RequestContentTypeSet"
+  }
+}
+
+impl Event for RequestBodySet {
+  fn event_type(&self) -> &'static str {
+    "RequestBodySet"
+  }
+}
+
+impl Event for RequestBodyUnset {
+  fn event_type(&self) -> &'static str {
+    "RequestBodyUnset"
+  }
+}
+
+impl Event for RequestRemoved {
+  fn event_type(&self) -> &'static str {
+    "RequestRemoved"
+  }
+}
+
+impl Event for ResponseAddedByPathAndMethod {
+  fn event_type(&self) -> &'static str {
+    "ResponseAddedByPathAndMethod"
+  }
+}
+
+impl Event for ResponseStatusCodeSet {
+  fn event_type(&self) -> &'static str {
+    "ResponseStatusCodeSet"
+  }
+}
+
+impl Event for ResponseContentTypeSet {
+  fn event_type(&self) -> &'static str {
+    "ResponseContentTypeSet"
+  }
+}
+
+impl Event for ResponseBodySet {
+  fn event_type(&self) -> &'static str {
+    "ResponseBodySet"
+  }
+}
+
+impl Event for ResponseBodyUnset {
+  fn event_type(&self) -> &'static str {
+    "ResponseBodyUnset"
+  }
+}
+
+impl Event for ResponseRemoved {
+  fn event_type(&self) -> &'static str {
+    "ResponseRemoved"
+  }
 }
