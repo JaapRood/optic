@@ -42,5 +42,9 @@ pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
         aggregate.apply(event)
     }
 
+    let state = aggregate.get_state();
+
+    console::log_1(&format!("State {:#?}", state).into());
+
     Ok(())
 }

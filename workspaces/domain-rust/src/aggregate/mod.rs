@@ -7,11 +7,29 @@ pub mod requests;
 pub mod rfc;
 pub mod shape;
 
+// rename this to RfcState.. but then what is RfcState?
+#[derive(Debug)]
+pub struct OpticState<'a> {
+  requests: &'a requests::RequestsState,
+  rfc: &'a rfc::RfcState,
+  shape: &'a shape::ShapeState,
+}
+
 #[derive(Default)]
 pub struct OpticAggregate {
   requests: requests::RequestsAggregate,
   rfc: rfc::RfcAggregate,
   shape: shape::ShapeAggregate,
+}
+
+impl OpticAggregate {
+  pub fn get_state(&self) -> OpticState {
+    OpticState {
+      requests: self.requests.get_state(),
+      rfc: self.rfc.get_state(),
+      shape: self.shape.get_state(),
+    }
+  }
 }
 
 impl Aggregate for OpticAggregate {

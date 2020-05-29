@@ -2,7 +2,7 @@ use cqrs_core::{Aggregate, AggregateEvent, Event};
 
 use crate::events::rfc::RfcEvent;
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct RfcState {}
 
 #[derive(Default)]

@@ -2,7 +2,7 @@ use cqrs_core::{Aggregate, AggregateEvent, Event};
 
 use crate::events::shape::ShapeEvent;
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct ShapeState {}
 
 #[derive(Default)]
