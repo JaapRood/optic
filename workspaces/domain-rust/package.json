@@ -4,6 +4,8 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
+    "ws:build": "echo \"Nothing to build (this way)\"",
+    "ws:clean": "echo \"Nothing to clean (this way)\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
