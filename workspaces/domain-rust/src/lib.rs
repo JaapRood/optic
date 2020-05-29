@@ -11,6 +11,7 @@ use events::OpticEvent;
 mod state;
 
 mod aggregate;
+use aggregate::{Aggregate, OpticAggregate};
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
@@ -35,6 +36,11 @@ pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
     console::log_1(&raw_events);
 
     let events: Vec<OpticEvent> = raw_events.into_serde().unwrap();
+
+    let mut aggregate = OpticAggregate::default();
+    for event in events {
+        aggregate.apply(event)
+    }
 
     Ok(())
 }

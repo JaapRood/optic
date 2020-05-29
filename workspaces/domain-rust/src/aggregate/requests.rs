@@ -1,25 +1,16 @@
-use cqrs_core::{Aggregate, AggregateEvent};
+use cqrs_core::{Aggregate, AggregateEvent, Event};
 
-use crate::events::requests;
-use crate::state::requests::RequestsState;
+use crate::events::requests::RequestsEvent;
+pub use crate::state::requests::RequestsState;
 
-pub enum RequestsAggregate {
-  Uninitialized,
-  Created(RequestsState),
-}
-
-impl Default for RequestsAggregate {
-  fn default() -> Self {
-    RequestsAggregate::Uninitialized
-  }
+#[derive(Default)]
+pub struct RequestsAggregate {
+  pub state: RequestsState,
 }
 
 impl RequestsAggregate {
-  pub fn get_state(&self) -> Option<&RequestsState> {
-    match *self {
-      RequestsAggregate::Uninitialized => None,
-      RequestsAggregate::Created(ref state) => Some(state),
-    }
+  pub fn get_state(&self) -> &RequestsState {
+    &self.state
   }
 }
 
@@ -33,10 +24,19 @@ impl Aggregate for RequestsAggregate {
   }
 }
 
-impl AggregateEvent<RequestsAggregate> for requests::PathComponentAdded {
+impl AggregateEvent<RequestsAggregate> for RequestsEvent {
   fn apply_to(self, aggregate: &mut RequestsAggregate) {
-    if let RequestsAggregate::Created(ref mut state) = aggregate {
-      // implement and call state.with_path_component
+    let state = &mut aggregate.state;
+
+    match self {
+      // RequestsEvent::PathComponentAdded(evt) => {
+      //   *state =
+      // }
+      _ => println!(
+        "Missing application logic of '{}' event for '{}' aggregate",
+        self.event_type(),
+        RequestsAggregate::aggregate_type()
+      ),
     }
   }
 }

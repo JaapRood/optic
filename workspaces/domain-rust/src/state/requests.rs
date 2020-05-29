@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[derive(Default)]
 pub struct RequestsState {
   pathComponents: HashMap<PathComponentId, PathComponent>,
 }
