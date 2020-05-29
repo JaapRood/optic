@@ -1,17 +1,17 @@
 use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
-use web_sys::console;
 
 #[macro_use]
 extern crate serde_derive;
 
+#[macro_use]
+mod macros;
+mod aggregate;
 mod events;
-use events::OpticEvent;
-
 mod state;
 
-mod aggregate;
 use aggregate::{Aggregate, OpticAggregate};
+use events::OpticEvent;
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
@@ -33,7 +33,7 @@ pub fn main_js() -> Result<(), JsValue> {
 
 #[wasm_bindgen]
 pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
-    console::log_1(&raw_events);
+    // console::log_1(&raw_events);
 
     let events: Vec<OpticEvent> = raw_events.into_serde().unwrap();
 
@@ -44,7 +44,10 @@ pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
 
     let state = aggregate.get_state();
 
-    console::log_1(&format!("State {:#?}", state).into());
+    console_log!("{:#?}", state);
+
+    // console::log_1(&format!("{:#?}", state).into());
+    // console_log!(&format("{:#?}", state));
 
     Ok(())
 }

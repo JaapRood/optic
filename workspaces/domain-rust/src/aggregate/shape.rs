@@ -31,7 +31,7 @@ impl AggregateEvent<ShapeAggregate> for ShapeEvent {
     let state = &mut aggregate.state;
 
     match self {
-      _ => println!(
+      _ => console_log!(
         "Missing application of '{}' event for '{}' aggregate",
         self.event_type(),
         ShapeAggregate::aggregate_type()

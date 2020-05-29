@@ -31,7 +31,7 @@ impl AggregateEvent<RfcAggregate> for RfcEvent {
     let state = &mut aggregate.state;
 
     match self {
-      _ => println!(
+      _ => console_log!(
         "Missing application logic of '{}' event for '{}' aggregate",
         self.event_type(),
         RfcAggregate::aggregate_type()

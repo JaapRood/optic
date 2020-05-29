@@ -32,7 +32,7 @@ impl AggregateEvent<RequestsAggregate> for RequestsEvent {
       // RequestsEvent::PathComponentAdded(evt) => {
       //   *state =
       // }
-      _ => println!(
+      _ => console_log!(
         "Missing application logic of '{}' event for '{}' aggregate",
         self.event_type(),
         RequestsAggregate::aggregate_type()
