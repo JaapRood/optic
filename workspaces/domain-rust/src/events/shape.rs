@@ -1,4 +1,5 @@
 use super::EventContext;
+use crate::state::shape::ShapeParametersDescriptor;
 use cqrs_core::Event;
 
 type ShapeId = String;
@@ -25,10 +26,10 @@ pub enum ShapeEvent {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShapeAdded {
-  shape_id: ShapeId,
-  base_shape_id: ShapeId,
-  // parameters: ShapeParametersDescriptor,
-  name: String,
+  pub shape_id: ShapeId,
+  pub base_shape_id: ShapeId,
+  pub parameters: ShapeParametersDescriptor,
+  pub name: String,
   event_context: Option<EventContext>,
 }
 

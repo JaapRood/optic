@@ -1,3 +1,4 @@
+use super::shape::ShapeId;
 use std::collections::HashMap;
 
 #[derive(Default, Debug)]
@@ -13,7 +14,6 @@ pub type PathComponentId = String;
 pub type RequestId = String;
 pub type RequestParameterId = String;
 pub type ResponseId = String;
-pub type ShapeId = String;
 
 #[derive(Debug)]
 struct PathComponent {

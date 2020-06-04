@@ -1,9 +1,7 @@
 use cqrs_core::{Aggregate, AggregateEvent, Event};
 
 use crate::events::shape::ShapeEvent;
-
-#[derive(Default, Debug)]
-pub struct ShapeState {}
+pub use crate::state::shape::ShapeState;
 
 #[derive(Default)]
 pub struct ShapeAggregate {
@@ -31,6 +29,9 @@ impl AggregateEvent<ShapeAggregate> for ShapeEvent {
     let state = &mut aggregate.state;
 
     match self {
+      ShapeEvent::ShapeAdded(e) => {
+        state.with_shape(e.shape_id, e.base_shape_id, e.parameters, e.name)
+      }
       _ => console_log!(
         "Missing application of '{}' event for '{}' aggregate",
         self.event_type(),
