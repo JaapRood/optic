@@ -1,3 +1,5 @@
+#![allow(dead_code)] // TODO: disallow dead code
+
 use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
 

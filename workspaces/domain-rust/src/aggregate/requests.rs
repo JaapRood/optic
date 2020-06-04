@@ -29,9 +29,17 @@ impl AggregateEvent<RequestsAggregate> for RequestsEvent {
     let state = &mut aggregate.state;
 
     match self {
+      // Path components
+      // ---------------
       RequestsEvent::PathComponentAdded(e) => {
         state.with_path_component(e.path_id, e.parent_path_id, e.name)
       }
+      // Requests
+      // --------
+      RequestsEvent::RequestAdded(e) => state.with_request(e.request_id, e.path_id, e.http_method),
+
+      // RequestParameters
+      // -----------------
       RequestsEvent::RequestParameterAddedByPathAndMethod(e) => state
         .with_request_parameter_by_path_and_method(
           e.parameter_id,
@@ -40,6 +48,9 @@ impl AggregateEvent<RequestsAggregate> for RequestsEvent {
           e.parameter_location,
           e.name,
         ),
+      RequestsEvent::RequestParameterShapeSet(e) => {
+        state.with_request_parameter_shape(e.parameter_id, e.parameter_descriptor)
+      }
       _ => console_log!(
         "Missing application logic of '{}' event for '{}' aggregate",
         self.event_type(),

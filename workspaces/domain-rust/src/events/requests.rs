@@ -1,7 +1,9 @@
 use super::EventContext;
 use cqrs_core::Event;
 
-use crate::state::requests::{PathComponentId, RequestId, RequestParameterId, ResponseId};
+use crate::state::requests::{
+  PathComponentId, RequestId, RequestParameterId, ResponseId, ShapedRequestParameterShapeDescriptor,
+};
 
 #[derive(Deserialize)]
 pub enum RequestsEvent {
@@ -108,8 +110,8 @@ pub struct RequestParameterRenamed {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RequestParameterShapeSet {
-  parameter_id: RequestParameterId,
-  // parameterDescriptor: ShapedRequestParameterShapeDescriptor,
+  pub parameter_id: RequestParameterId,
+  pub parameter_descriptor: ShapedRequestParameterShapeDescriptor,
   event_context: Option<EventContext>,
 }
 
@@ -130,9 +132,9 @@ pub struct RequestParameterRemoved {
 #[derive(Deserialize)] // Request events
 #[serde(rename_all = "camelCase")]
 pub struct RequestAdded {
-  request_id: RequestId,
-  path_id: PathComponentId,
-  http_method: String,
+  pub request_id: RequestId,
+  pub path_id: PathComponentId,
+  pub http_method: String,
   event_context: Option<EventContext>,
 }
 
