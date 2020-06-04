@@ -2,7 +2,8 @@ use super::EventContext;
 use cqrs_core::Event;
 
 use crate::state::requests::{
-  PathComponentId, RequestId, RequestParameterId, ResponseId, ShapedRequestParameterShapeDescriptor,
+  PathComponentId, RequestId, RequestParameterId, ResponseId, ShapedBodyDescriptor,
+  ShapedRequestParameterShapeDescriptor,
 };
 
 #[derive(Deserialize)]
@@ -171,10 +172,10 @@ pub struct RequestRemoved {
 #[derive(Deserialize)] // Response events
 #[serde(rename_all = "camelCase")]
 pub struct ResponseAddedByPathAndMethod {
-  response_id: ResponseId,
-  path_id: PathComponentId,
-  http_method: String,
-  http_status_code: u16,
+  pub response_id: ResponseId,
+  pub path_id: PathComponentId,
+  pub http_method: String,
+  pub http_status_code: u16,
   event_context: Option<EventContext>,
 }
 
@@ -197,8 +198,8 @@ pub struct ResponseContentTypeSet {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ResponseBodySet {
-  response_id: ResponseId,
-  // bodyDescriptor: ShapedBodyDescriptor,
+  pub response_id: ResponseId,
+  pub body_descriptor: ShapedBodyDescriptor,
   event_context: Option<EventContext>,
 }
 

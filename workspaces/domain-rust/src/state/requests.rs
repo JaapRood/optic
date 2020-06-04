@@ -6,6 +6,7 @@ pub struct RequestsState {
   parent_path: HashMap<PathComponentId, PathComponentId>,
   request_parameters: HashMap<RequestParameterId, HttpRequestParameter>,
   requests: HashMap<RequestId, HttpRequest>,
+  responses: HashMap<ResponseId, HttpResponse>,
 }
 
 pub type PathComponentId = String;
@@ -41,6 +42,13 @@ struct HttpRequestParameter {
 }
 
 #[derive(Debug)]
+struct HttpResponse {
+  response_id: ResponseId,
+  response_descriptor: ResponseDescriptor,
+  is_removed: bool,
+}
+
+#[derive(Debug)]
 struct RequestDescriptor {
   path_component_id: PathComponentId,
   http_method: String,
@@ -48,13 +56,22 @@ struct RequestDescriptor {
 }
 
 #[derive(Debug)]
-enum BodyDescriptor {
+struct ResponseDescriptor {
+  path_id: PathComponentId,
+  http_method: String,
+  http_status_code: u16,
+  body_descriptor: BodyDescriptor,
+}
+
+#[derive(Debug)]
+pub enum BodyDescriptor {
   Unset,
   Shaped(ShapedBodyDescriptor),
 }
 
-#[derive(Debug)]
-struct ShapedBodyDescriptor {
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ShapedBodyDescriptor {
   http_content_type: String,
   shape_id: ShapeId,
   is_removed: bool,
@@ -164,5 +181,39 @@ impl RequestsState {
     let existing_descriptor = &mut parameter.request_parameter_descriptor;
     existing_descriptor.shape_descriptor =
       RequestParameterShapeDescriptor::Shaped(parameter_shape_descriptor);
+  }
+
+  // Responses
+  // ---------
+
+  pub fn with_response_by_path_and_method(
+    &mut self,
+    response_id: ResponseId,
+    path_id: PathComponentId,
+    http_method: String,
+    http_status_code: u16,
+  ) {
+    self.responses.insert(
+      response_id.clone(),
+      HttpResponse {
+        response_id: response_id.clone(),
+        response_descriptor: ResponseDescriptor {
+          path_id,
+          http_method,
+          http_status_code,
+          body_descriptor: BodyDescriptor::Unset,
+        },
+        is_removed: false,
+      },
+    );
+  }
+
+  pub fn with_response_body(&mut self, response_id: ResponseId, body_descriptor: BodyDescriptor) {
+    let response = self
+      .responses
+      .get_mut(&response_id)
+      .expect("response must exist to set body for it");
+    let response_descriptor = &mut response.response_descriptor;
+    response_descriptor.body_descriptor = body_descriptor;
   }
 }

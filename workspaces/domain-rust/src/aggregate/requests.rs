@@ -1,7 +1,7 @@
 use cqrs_core::{Aggregate, AggregateEvent, Event};
 
 use crate::events::requests::RequestsEvent;
-pub use crate::state::requests::RequestsState;
+pub use crate::state::requests::{BodyDescriptor, RequestsState};
 
 #[derive(Default)]
 pub struct RequestsAggregate {
@@ -50,6 +50,17 @@ impl AggregateEvent<RequestsAggregate> for RequestsEvent {
         ),
       RequestsEvent::RequestParameterShapeSet(e) => {
         state.with_request_parameter_shape(e.parameter_id, e.parameter_descriptor)
+      }
+      // Responses
+      // ---------
+      RequestsEvent::ResponseAddedByPathAndMethod(e) => state.with_response_by_path_and_method(
+        e.response_id,
+        e.path_id,
+        e.http_method,
+        e.http_status_code,
+      ),
+      RequestsEvent::ResponseBodySet(e) => {
+        state.with_response_body(e.response_id, BodyDescriptor::Shaped(e.body_descriptor))
       }
       _ => console_log!(
         "Missing application logic of '{}' event for '{}' aggregate",
