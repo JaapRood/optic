@@ -1,5 +1,5 @@
 use super::EventContext;
-use crate::state::shape::ShapeParametersDescriptor;
+use crate::state::shape::{FieldShapeDescriptor, ShapeParametersDescriptor};
 use cqrs_core::Event;
 
 type ShapeId = String;
@@ -91,17 +91,17 @@ pub struct ShapeParameterRemoved {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FieldAdded {
-  field_id: FieldId,
-  shape_id: ShapeId,
-  name: String,
-  // shapeDescriptor: FieldShapeDescriptor,
+  pub field_id: FieldId,
+  pub shape_id: ShapeId,
+  pub name: String,
+  pub shape_descriptor: FieldShapeDescriptor,
   event_context: Option<EventContext>,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FieldShapeSet {
-  // shapeDescriptor: FieldShapeDescriptor,
+  shape_descriptor: FieldShapeDescriptor,
   event_context: Option<EventContext>,
 }
 

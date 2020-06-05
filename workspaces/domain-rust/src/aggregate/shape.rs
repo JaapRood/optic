@@ -32,6 +32,9 @@ impl AggregateEvent<ShapeAggregate> for ShapeEvent {
       ShapeEvent::ShapeAdded(e) => {
         state.with_shape(e.shape_id, e.base_shape_id, e.parameters, e.name)
       }
+      ShapeEvent::FieldAdded(e) => {
+        state.with_field(e.field_id, e.shape_id, e.name, e.shape_descriptor)
+      }
       _ => console_log!(
         "Missing application of '{}' event for '{}' aggregate",
         self.event_type(),
