@@ -1,5 +1,6 @@
 use super::shape::ShapeId;
-use std::collections::HashMap;
+use std::collections::hash_map::{HashMap, Iter as HashMapIter};
+// use std::collections::HashMap;
 
 #[derive(Default, Debug)]
 pub struct RequestsState {
@@ -29,9 +30,10 @@ struct PathComponentDescriptor {
 }
 
 #[derive(Debug)]
-struct HttpRequest {
-  request_id: RequestId,
-  request_descriptor: RequestDescriptor,
+pub struct HttpRequest {
+  pub request_id: RequestId,
+  pub request_descriptor: RequestDescriptor,
+  pub is_removed: bool,
 }
 
 #[derive(Debug)]
@@ -42,25 +44,25 @@ struct HttpRequestParameter {
 }
 
 #[derive(Debug)]
-struct HttpResponse {
-  response_id: ResponseId,
-  response_descriptor: ResponseDescriptor,
-  is_removed: bool,
+pub struct HttpResponse {
+  pub response_id: ResponseId,
+  pub response_descriptor: ResponseDescriptor,
+  pub is_removed: bool,
 }
 
 #[derive(Debug)]
-struct RequestDescriptor {
-  path_component_id: PathComponentId,
-  http_method: String,
-  body_descriptor: BodyDescriptor,
+pub struct RequestDescriptor {
+  pub path_component_id: PathComponentId,
+  pub http_method: String,
+  pub body_descriptor: BodyDescriptor,
 }
 
 #[derive(Debug)]
-struct ResponseDescriptor {
-  path_id: PathComponentId,
-  http_method: String,
-  http_status_code: u16,
-  body_descriptor: BodyDescriptor,
+pub struct ResponseDescriptor {
+  pub path_id: PathComponentId,
+  pub http_method: String,
+  pub http_status_code: u16,
+  pub body_descriptor: BodyDescriptor,
 }
 
 #[derive(Debug)]
@@ -100,6 +102,14 @@ pub struct ShapedRequestParameterShapeDescriptor {
 }
 
 impl RequestsState {
+  pub fn all_requests(&self) -> impl Iterator<Item = &HttpRequest> {
+    self.requests.values()
+  }
+
+  pub fn all_responses(&self) -> impl Iterator<Item = &HttpResponse> {
+    self.responses.values()
+  }
+
   // Path components
   // ---------------
   pub fn with_path_component(
@@ -138,6 +148,7 @@ impl RequestsState {
           http_method,
           body_descriptor: BodyDescriptor::Unset,
         },
+        is_removed: false,
       },
     );
   }

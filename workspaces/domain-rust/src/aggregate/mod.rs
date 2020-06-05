@@ -10,9 +10,9 @@ pub mod shape;
 // rename this to RfcState.. but then what is RfcState?
 #[derive(Debug)]
 pub struct OpticState<'a> {
-  requests: &'a requests::RequestsState,
-  rfc: &'a rfc::RfcState,
-  shape: &'a shape::ShapeState,
+  pub requests: &'a requests::RequestsState,
+  pub rfc: &'a rfc::RfcState,
+  pub shape: &'a shape::ShapeState,
 }
 
 #[derive(Default)]

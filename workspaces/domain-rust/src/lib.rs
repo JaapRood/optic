@@ -10,6 +10,7 @@ extern crate serde_derive;
 mod macros;
 mod aggregate;
 mod events;
+mod queries;
 mod state;
 
 use aggregate::{Aggregate, OpticAggregate};
@@ -35,8 +36,6 @@ pub fn main_js() -> Result<(), JsValue> {
 
 #[wasm_bindgen]
 pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
-    // console::log_1(&raw_events);
-
     let events: Vec<OpticEvent> = raw_events.into_serde().unwrap();
 
     let mut aggregate = OpticAggregate::default();
@@ -46,10 +45,10 @@ pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
 
     let state = aggregate.get_state();
 
-    console_log!("{:#?}", state);
+    console_log!("State: {:#?}", state);
 
-    // console::log_1(&format!("{:#?}", state).into());
-    // console_log!(&format("{:#?}", state));
+    let endpoints = queries::endpoints(&state);
+    console_log!("Endpoints: {:#?}", endpoints);
 
     Ok(())
 }
