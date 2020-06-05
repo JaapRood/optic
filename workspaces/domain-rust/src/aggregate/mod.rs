@@ -1,5 +1,6 @@
 pub use cqrs_core::Aggregate;
 use cqrs_core::AggregateEvent;
+use wasm_bindgen::prelude::*;
 
 use crate::events::OpticEvent;
 
@@ -15,6 +16,7 @@ pub struct OpticState<'a> {
   pub shape: &'a shape::ShapeState,
 }
 
+#[wasm_bindgen]
 #[derive(Default)]
 pub struct OpticAggregate {
   requests: requests::RequestsAggregate,

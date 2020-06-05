@@ -38,9 +38,10 @@ export default function DocsPage() {
 }
 
 function Endpoints({ domain, events }) {
-  const rfcState = domain.rfc_state_from_events(events);
+  const rfcAggregate = domain.rfc_aggregate_from_events(events);
+  const endpoints = domain.aggregate_endpoints(rfcAggregate);
 
-  console.log(rfcState);
+  console.log(endpoints);
 
   return <div>Render endpoints</div>;
 }

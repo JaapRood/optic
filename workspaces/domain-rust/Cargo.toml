@@ -23,6 +23,7 @@ lto = true
 serde = "1.0.106"
 serde_derive = "1.0.106"
 cqrs-core = "0.2.2"
+js-sys = "0.3.40"
 
 # The `wasm-bindgen` crate provides the bare minimum functionality needed
 # to interact with JavaScript.

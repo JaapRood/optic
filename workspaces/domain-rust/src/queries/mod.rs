@@ -6,8 +6,8 @@ mod requests;
 
 #[derive(Debug)]
 pub struct Endpoint<'a> {
-  path_id: &'a PathComponentId,
-  http_method: &'a String,
+  pub path_id: &'a PathComponentId,
+  pub http_method: &'a String,
 }
 
 pub fn endpoints<'a>(state: &'a OpticState) -> Vec<Endpoint<'a>> {

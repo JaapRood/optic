@@ -1,6 +1,6 @@
 #![allow(dead_code)] // TODO: disallow dead code
 
-use std::collections::HashMap;
+use js_sys::Array;
 use wasm_bindgen::prelude::*;
 
 #[macro_use]
@@ -10,6 +10,7 @@ extern crate serde_derive;
 mod macros;
 mod aggregate;
 mod events;
+mod js;
 mod queries;
 mod state;
 
@@ -35,7 +36,7 @@ pub fn main_js() -> Result<(), JsValue> {
 }
 
 #[wasm_bindgen]
-pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
+pub fn rfc_aggregate_from_events(raw_events: &JsValue) -> Result<OpticAggregate, JsValue> {
     let events: Vec<OpticEvent> = raw_events.into_serde().unwrap();
 
     let mut aggregate = OpticAggregate::default();
@@ -43,12 +44,21 @@ pub fn rfc_state_from_events(raw_events: &JsValue) -> Result<(), JsValue> {
         aggregate.apply(event)
     }
 
+    Ok(aggregate)
+}
+
+#[wasm_bindgen]
+pub fn aggregate_endpoints(aggregate: &OpticAggregate) -> Result<Array, JsValue> {
     let state = aggregate.get_state();
+    let endpoints = queries::endpoints(&state);
 
     console_log!("State: {:#?}", state);
 
-    let endpoints = queries::endpoints(&state);
     console_log!("Endpoints: {:#?}", endpoints);
 
-    Ok(())
+    Ok(endpoints
+        .iter()
+        .map(js::endpoint_from)
+        .map(JsValue::from)
+        .collect())
 }
