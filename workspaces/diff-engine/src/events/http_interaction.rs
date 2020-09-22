@@ -6,6 +6,7 @@ use cqrs_core::Event;
 use protobuf;
 use serde::Deserialize;
 use serde_json;
+use std::collections::HashMap;
 use std::io;
 use std::iter::FromIterator;
 
@@ -102,7 +103,14 @@ impl From<shapehash::ShapeDescriptor> for serde_json::value::Value {
         shape_descriptor
           .take_items()
           .into_iter()
-          .map(|descriptor| Value::from(descriptor)),
+          .map(|descriptor| {
+            let value = Value::from(descriptor);
+            let key = serde_json::to_string(&value).unwrap();
+            (key, value)
+          })
+          .collect::<HashMap<_, _>>()
+          .into_iter()
+          .map(|(key, value)| value),
       ),
       shapehash::ShapeDescriptor_PrimitiveType::BOOLEAN => Value::from(true),
       shapehash::ShapeDescriptor_PrimitiveType::NUMBER => Value::from(1),
