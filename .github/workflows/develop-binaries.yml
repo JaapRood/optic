@@ -88,6 +88,8 @@ jobs:
       FILE_NAME: optic_diff${{ matrix.suffix }}
       BUCKET: optic-packages
     steps:
+        run: |
+          echo "SHORT_COMMIT_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
       - name: Prepare directory structure
         run: |
           mkdir -p build/$ARCHIVE_NAME
@@ -114,4 +116,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'us-east-1'
       - name: 'Upload to S3'
-        run: aws s3 cp dist/$ARCHIVE_NAME.tar.gz s3://$BUCKET/dists/optic_diff/develop/current/$ARCHIVE_NAME.tar.gz --sse=AES256 --acl=public-read
+        run: |
+          aws s3 cp dist/$ARCHIVE_NAME.tar.gz s3://$BUCKET/dists/optic_diff/develop/commits/$SHORT_COMMIT_SHA/$ARCHIVE_NAME.tar.gz --sse=AES256 --acl=public-read
+          aws s3 cp s3://$BUCKET/dists/optic_diff/develop/commits/$SHORT_COMMIT_SHA/$ARCHIVE_NAME.tar.gz s3://$BUCKET/dists/optic_diff/develop/current/$ARCHIVE_NAME.tar.gz 
