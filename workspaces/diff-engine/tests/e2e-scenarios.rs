@@ -1,6 +1,6 @@
 #![recursion_limit="2560"]
 use insta::assert_debug_snapshot;
-use optic_diff::{diff_interaction, HttpInteraction, SpecEvent, SpecProjection};
+use optic_diff_engine::{diff_interaction, HttpInteraction, SpecEvent, SpecProjection};
 use petgraph::dot::Dot;
 use serde_json::json;
 
