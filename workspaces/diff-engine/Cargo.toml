@@ -7,6 +7,9 @@ edition = "2018"
 [lib]
 crate-type = ["lib"]
 
+[profile.release]
+lto = true # small wasm files, but slow to compile
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
