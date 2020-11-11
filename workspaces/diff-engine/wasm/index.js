@@ -1,1 +1,1 @@
-module.exports = require('./pkg');
+module.exports = require('./pkg/optic_diff_wasm');
