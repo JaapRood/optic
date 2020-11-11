@@ -267,6 +267,7 @@ dependencies = [
  "console_error_panic_hook",
  "log",
  "optic_diff_engine",
+ "serde",
  "serde_json",
  "wasm-bindgen",
  "wasm-logger",
