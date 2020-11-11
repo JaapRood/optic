@@ -3,11 +3,16 @@
 use wasm_bindgen::prelude::*;
 
 use optic_diff_engine::{SpecEvent, SpecProjection};
-use serde_wasm_bindgen;
+
+#[wasm_bindgen(start)]
+pub fn init() {
+  std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+  wasm_logger::init(wasm_logger::Config::default());
+}
 
 #[wasm_bindgen]
-pub fn spec_from_events(raw_events: JsValue) -> Result<WasmSpecProjection, JsValue> {
-  let spec_events: Vec<SpecEvent> = serde_wasm_bindgen::from_value(raw_events)?;
+pub fn spec_from_events(spec_json: String) -> Result<WasmSpecProjection, JsValue> {
+  let spec_events: Vec<SpecEvent> = serde_json::from_str(&spec_json).unwrap();
   let spec_projection = SpecProjection::from(spec_events);
 
   Ok(WasmSpecProjection::from(spec_projection))
